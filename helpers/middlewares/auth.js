@@ -214,7 +214,7 @@ module.exports = async (req, res, next) => {
             return failedRes()
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const decoded = jwt.verify(token, '8UdW2')
 
         // const user = await UserModel.findOne({
         //     _id: decoded.userID,

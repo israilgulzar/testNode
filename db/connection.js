@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 module.exports = async () => {
     try {
-        const db_url = process.env.DB_URL
+        const db_url = 'mongodb+srv://tajperfumesdevelopers:BWKzMMdN8VZTVBDg@cluster0.hbhm9wq.mongodb.net/tajperfumes?retryWrites=true&w=majority'
 
         await mongoose.connect(db_url, {
             useNewUrlParser: true,
