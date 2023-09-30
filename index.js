@@ -6,7 +6,7 @@ require("dotenv").config()
 
 const api = require("./routes")
 const databaseConnection = require("./db/connection")
-const PORT = 4500
+const PORT = 4500 
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
