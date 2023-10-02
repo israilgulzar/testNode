@@ -1,5 +1,5 @@
 
-const UserSchema = require("./userSchema")
+const UserSchema = require("./schema")
 
 const createUser = async (insertData) => {
     const user = new UserSchema(insertData)

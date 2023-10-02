@@ -3,11 +3,10 @@ const mongoose = require("mongoose")
 
 const Schema = mongoose.Schema
 
-const AdminSchema = new Schema(
+const VariantSchema = new Schema(
     {
-        name: String,
-        email: String,
-        password: String,
+        variantType: String, // ml/kg
+        isActive: Boolean,
         isDeleted: {
             type: Boolean,
             default: false
@@ -16,4 +15,4 @@ const AdminSchema = new Schema(
     { timestamps: true }
 )
 
-module.exports = mongoose.model("admin", AdminSchema)
+module.exports = mongoose.model("Variant", VariantSchema)
