@@ -24,7 +24,7 @@ module.exports = async (req, res, next) => {
             return failedRes()
         }
 
-        const decoded = jwt.verify(token, '4aNFnheesw')
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_ADMIN)
 
         req.body.adminID = decoded.adminID
         next()

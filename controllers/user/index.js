@@ -97,7 +97,7 @@ const loginUser = async (userInputs) => {
                 userID: user._id,
                 email: user.email,
             },
-            "8UdW2",
+            process.env.JWT_SECRET,
             {
                 expiresIn: "365d",
             }
