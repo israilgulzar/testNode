@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
         cb(null, "uploads/")
     },
     filename: function (req, file, cb) {
-        const customPrefix = "file"
+        const customPrefix = "ig"
 
         const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9)
 

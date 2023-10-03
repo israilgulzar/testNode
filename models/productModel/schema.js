@@ -47,8 +47,8 @@ const productSchema = new Schema(
         },
         badgeType: {
             type: Number,
-            default: 1,
-        },
+            default: 1,  // 1 new arrival,  2. trending now  3. best seller
+         },
         hasVariants: {
             type: Boolean,
             default: false,

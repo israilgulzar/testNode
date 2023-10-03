@@ -1,4 +1,3 @@
-
 const CategorySchema = require("./schema")
 
 const createCategory = (insertData) => {
@@ -247,6 +246,32 @@ const fetchCategoryList = async () => {
     return categoryData
 }
 
+const homePageCategory = () => {
+    searchFilter = []
+
+    searchFilter.push({
+        isActive: true,
+    })
+
+    searchFilter.push({
+        isDeleted: false,
+    })
+
+    const query = searchFilter.length > 0 ? { $and: searchFilter } : {}
+
+    const getData = { _id: 1, categoryName: 1 }
+
+    return CategorySchema.find(query, getData)
+        .sort({ shortOrder: -1 })
+        .then((data) => {
+            return data
+        })
+        .catch((error) => {
+            console.log(error)
+            return null
+        })
+}
+
 module.exports = {
     createCategory,
     fetchCategoryData,
@@ -259,4 +284,5 @@ module.exports = {
     customerCategoryList,
     CusCategoryCount,
     fetchCategoryList,
+    homePageCategory,
 }

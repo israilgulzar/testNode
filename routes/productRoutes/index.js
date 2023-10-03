@@ -49,6 +49,12 @@ module.exports = async (app) => {
         res.status(data.status_code).json(data)
     })
 
+    
+    app.post("/product/viewsCount", async (req, res) => {
+        const data = await productControllers.viewsCount(req.body)
+        res.status(200).json()
+    })
+
     app.post("/uploads", upload.single("file"), (req, res) => {
         const file = req.file
         const { filename } = req.body

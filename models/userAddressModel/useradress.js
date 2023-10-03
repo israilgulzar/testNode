@@ -1,4 +1,3 @@
-
 const UserAddressSchema = require("./schema")
 
 const createUserAddress = async (insertData) => {
@@ -31,12 +30,17 @@ const fetchUserAddressData = (search, start, limit) => {
         })
     }
 
+    searchFilter.push({
+        isDeleted: false,
+    })
+
     const query = searchFilter.length > 0 ? { $and: searchFilter } : {}
 
     return UserAddressSchema.find(query)
         .populate({
             path: "userData",
             select: ["name", "email", "phone", "countryCode"],
+            match: { isDeleted: false },
         })
 
         .sort({ createdAt: -1 })
@@ -68,10 +72,13 @@ const updateUserAddress = async (userAddressId, updateData) => {
 const fetchUserAddressById = async (userAddressId) => {
     const userAddressData = await UserAddressSchema.findOne({
         _id: userAddressId,
-    }).populate({
-        path: "userData",
-        select: ["name", "email", "phone", "countryCode"],
+        isDeleted: false,
     })
+        .populate({
+            path: "userData",
+            select: ["name", "email", "phone", "countryCode"],
+            match: { isDeleted: false },
+        })
 
         .then((data) => {
             return data
@@ -83,8 +90,9 @@ const fetchUserAddressById = async (userAddressId) => {
 }
 
 const deleteUserAddress = async (userAddressId) => {
-    const userAddressResult = await UserAddressSchema
-        .deleteOne({ _id: userAddressId })
+    const userAddressResult = await UserAddressSchema.deleteOne({
+        _id: userAddressId,
+    })
         .then((data) => {
             return data
         })

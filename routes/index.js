@@ -11,6 +11,8 @@ let userAddressRoutes = require("./userAddressRoutes")
 let policyRoutes = require("./policyRoutes")
 let tagRoutes = require("./tagRoutes")
 let reviewRoutes = require("./reviewRoutes")
+let homePageRoutes = require("./homePageRoutes")
+let imageSliderRoutes = require("./imageSliderRoutes")
 
 module.exports = (app) => {
     userRoutes(app)
@@ -26,4 +28,6 @@ module.exports = (app) => {
     tagRoutes(app)
     policyRoutes(app)
     reviewRoutes(app)
+    homePageRoutes(app)
+    imageSliderRoutes(app)
 }

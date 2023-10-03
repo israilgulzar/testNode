@@ -352,8 +352,7 @@ const deleteProduct = async (userInputs) => {
                 status_code: 200,
                 message: "Product deleted successfully",
             })
-        }
-         else {
+        } else {
             return makeRespObj({
                 status_code: 200,
                 message: "Failed to delete Product",
@@ -422,6 +421,24 @@ const chnageProductStatus = async (userInputs) => {
     }
 }
 
+const viewsCount = async (userInputs) => {
+    const { productId } = userInputs
+    console.log("userInputs", userInputs)
+    try {
+        const product = await ProductModel.fetchProductById(productId)
+
+        if (!product) {
+            throw new Error("Product not found")
+        }
+
+        product.viewsCount += 1
+
+        await product.save()
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 module.exports = {
     getProductData,
     getProductById,
@@ -431,4 +448,5 @@ module.exports = {
     productManagement,
     productPricing,
     deleteProduct,
+    viewsCount,
 }

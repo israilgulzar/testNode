@@ -117,8 +117,11 @@ const deleteUserAddress = async (userInputs) => {
     try {
         const { userAddressId } = userInputs
 
-        const deleteUserAddress = await UserAddressModel.deleteUserAddress(
-            userAddressId
+        const deleteUserAddress = await UserAddressModel.updateUserAddress(
+            userAddressId,{
+                isDeleted: true
+
+            }
         )
 
         if (deleteUserAddress) {

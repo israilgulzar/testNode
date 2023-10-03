@@ -11,6 +11,21 @@ const createProduct = async (insertData) => {
     }
 }
 
+const fetchProductbyId = async (productId) => {
+    const productData = await Product
+        .findOne({
+            _id: productId,
+            isDeleted: false,
+        })
+        .then((data) => {
+            return data
+        })
+        .catch((err) => {
+            return null
+        })
+    return productData
+}
+
 // const updateProduct = async (updateData) => {
 //     try {
 //         const result = await Product.updateOne(
@@ -930,6 +945,288 @@ const variantPriceData = async (search, start, limit, maxPrice, minPrice) => {
     }
 }
 
+const homePageProduct = () => {
+    return Product.findOne({ isDeleted: false })
+
+        .populate({
+            path: "subCategoryData",
+            select: "subCategoryName",
+            match: {
+                $and: [{ isDeleted: false }, { isActive: true }],
+            },
+            populate: {
+                path: "categoryData",
+                model: "Category",
+                select: "categoryName",
+                match: { isDeleted: false },
+            },
+        })
+        .populate({
+            path: "brandData",
+            select: "brandName",
+            match: { isDeleted: false },
+        })
+        .populate({
+            path: "variantPriceData",
+            select: [
+                "variantData",
+                "price",
+                "oldPrice",
+                "sliderImages",
+                "discounts",
+                "stock",
+            ],
+            populate: {
+                path: "variantData",
+                model: "Variant",
+                select: "variantType",
+                match: {
+                    $and: [{ isDeleted: false }, { isActive: true }],
+                },
+            },
+        })
+        .populate("parentProductData")
+
+        .then((data) => {
+            return data
+        })
+        .catch((error) => {
+            console.error(error)
+            return null
+        })
+}
+
+const newArrivalProduct = (search, start, limit) => {
+    let searchFilter = []
+    if (search !== "") {
+        searchFilter.push({
+            $or: [
+                {
+                    name: {
+                        $regex: ".*" + search + ".*",
+                        $options: "i",
+                    },
+                },
+            ],
+        })
+    }
+
+    searchFilter.push({
+        isDeleted: false,
+    })
+
+    searchFilter.push({
+        stepFlag: 3,
+        badgeType: 1,
+    })
+
+    const query = searchFilter.length > 0 ? { $and: searchFilter } : {}
+
+    return Product.find(query)
+
+        .populate({
+            path: "subCategoryData",
+            select: "subCategoryName",
+            match: {
+                $and: [{ isDeleted: false }, { isActive: true }],
+            },
+            populate: {
+                path: "categoryData",
+                model: "Category",
+                select: "categoryName",
+                match: { isDeleted: false },
+            },
+        })
+
+        .populate({
+            path: "brandData",
+            select: "brandName",
+            match: { isDeleted: false },
+        })
+
+        .populate({
+            path: "variantPriceData",
+            select: [
+                "variantData",
+                "price",
+                "oldPrice",
+                "sliderImages",
+                "discounts",
+                "stock",
+            ],
+            populate: {
+                path: "variantData",
+                model: "Variant",
+                select: "variantType",
+                match: { isDeleted: false },
+            },
+        })
+        .populate("parentProductData")
+        .skip(start)
+        .limit(limit)
+        .then((productData) => {
+            console.log("Products:", productData)
+            return productData
+        })
+        .catch((error) => {
+            console.error("Error fetching productaLL data:", error)
+            return null
+        })
+}
+
+const trendingNow = (search, start, limit) => {
+    let searchFilter = []
+    if (search !== "") {
+        searchFilter.push({
+            $or: [
+                {
+                    name: {
+                        $regex: ".*" + search + ".*",
+                        $options: "i",
+                    },
+                },
+            ],
+        })
+    }
+
+    searchFilter.push({
+        isDeleted: false,
+    })
+
+    searchFilter.push({
+        stepFlag: 3,
+        badgeType: 2,
+    })
+
+    const query = searchFilter.length > 0 ? { $and: searchFilter } : {}
+    return Product.find(query)
+
+        .populate({
+            path: "subCategoryData",
+            select: "subCategoryName",
+            match: {
+                $and: [{ isDeleted: false }, { isActive: true }],
+            },
+            populate: {
+                path: "categoryData",
+                model: "Category",
+                select: "categoryName",
+                match: { isDeleted: false },
+            },
+        })
+
+        .populate({
+            path: "brandData",
+            select: "brandName",
+            match: { isDeleted: false },
+        })
+
+        .populate({
+            path: "variantPriceData",
+            select: [
+                "variantData",
+                "price",
+                "oldPrice",
+                "sliderImages",
+                "discounts",
+                "stock",
+            ],
+            populate: {
+                path: "variantData",
+                model: "Variant",
+                select: "variantType",
+                match: { isDeleted: false },
+            },
+        })
+        .populate("parentProductData")
+        .skip(start)
+        .limit(limit)
+        .then((productData) => {
+            console.log("Products:", productData)
+            return productData
+        })
+        .catch((error) => {
+            console.error("Error fetching productaLL data:", error)
+            return null
+        })
+}
+
+const bestSeller = (search, start, limit) => {
+    let searchFilter = []
+    if (search !== "") {
+        searchFilter.push({
+            $or: [
+                {
+                    name: {
+                        $regex: ".*" + search + ".*",
+                        $options: "i",
+                    },
+                },
+            ],
+        })
+    }
+
+    searchFilter.push({
+        isDeleted: false,
+    })
+
+    searchFilter.push({
+        stepFlag: 3,
+        badgeType: 3,
+    })
+
+    const query = searchFilter.length > 0 ? { $and: searchFilter } : {}
+    return Product.find(query)
+
+        .populate({
+            path: "subCategoryData",
+            select: "subCategoryName",
+            match: {
+                $and: [{ isDeleted: false }, { isActive: true }],
+            },
+            populate: {
+                path: "categoryData",
+                model: "Category",
+                select: "categoryName",
+                match: { isDeleted: false },
+            },
+        })
+
+        .populate({
+            path: "brandData",
+            select: "brandName",
+            match: { isDeleted: false },
+        })
+
+        .populate({
+            path: "variantPriceData",
+            select: [
+                "variantData",
+                "price",
+                "oldPrice",
+                "sliderImages",
+                "discounts",
+                "stock",
+            ],
+            populate: {
+                path: "variantData",
+                model: "Variant",
+                select: "variantType",
+                match: { isDeleted: false },
+            },
+        })
+        .populate("parentProductData")
+        .skip(start)
+        .limit(limit)
+        .then((productData) => {
+            return productData
+        })
+        .catch((error) => {
+            console.error("Error fetching productaLL data:", error)
+            return null
+        })
+}
+
 module.exports = {
     createProduct,
     updateProduct,
@@ -944,4 +1241,9 @@ module.exports = {
     fetchCategoryData,
     fetchBrandIds,
     updateProductById,
+    homePageProduct,
+    newArrivalProduct,
+    trendingNow,
+    bestSeller,
+    fetchProductbyId
 }

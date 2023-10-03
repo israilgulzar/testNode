@@ -1,4 +1,3 @@
-
 const BrandSchema = require("./schema")
 
 const createBrand = async (insertData) => {
@@ -36,7 +35,8 @@ const fetchBrandData = (search, start, limit) => {
 
     const query = searchFilter.length > 0 ? { $and: searchFilter } : {}
 
-    return BrandSchema.find(query).select('-isDeleted')
+    return BrandSchema.find(query)
+        .select("-isDeleted")
         .sort({ createdAt: -1 })
         .skip(start)
         .limit(limit)
@@ -65,7 +65,8 @@ const fetchBrandById = async (brandId) => {
         _id: brandId,
         isActive: true,
         isDeleted: false,
-    }).select('-isDeleted')
+    })
+        .select("-isDeleted")
         .then((data) => {
             return data
         })
@@ -154,8 +155,7 @@ const fetchBrandCountCus = async (search) => {
         searchFilter.brandName = { $regex: ".*" + search + ".*", $options: "i" }
     }
 
-    return BrandSchema
-        .countDocuments(searchFilter)
+    return BrandSchema.countDocuments(searchFilter)
         .then((brandCount) => {
             return brandCount
         })
@@ -174,8 +174,7 @@ const fetchBrandCount = async (search) => {
 
     searchFilter.isDeleted = false
 
-    return BrandSchema
-        .countDocuments(searchFilter)
+    return BrandSchema.countDocuments(searchFilter)
         .then((brandCount) => {
             return brandCount
         })
@@ -208,7 +207,8 @@ const fetchBrandDataCus = (search, start, limit) => {
 
     const query = searchFilter.length > 0 ? { $and: searchFilter } : {}
 
-    return BrandSchema.find(query).select('-isDeleted')
+    return BrandSchema.find(query)
+        .select("-isDeleted")
         .sort({ createdAt: -1 })
         .skip(start)
         .limit(limit)
@@ -216,6 +216,33 @@ const fetchBrandDataCus = (search, start, limit) => {
             return brandData
         })
         .catch((error) => {
+            return null
+        })
+}
+
+const homePageBrand = () => {
+    searchFilter = []
+
+    searchFilter.push({
+        isActive: true,
+    })
+
+    searchFilter.push({
+        isDeleted: false,
+    })
+
+    const query = searchFilter.length > 0 ? { $and: searchFilter } : {}
+
+    const getData = { _id: 1, brandName: 1, brandImage: 1 }
+
+
+    return BrandSchema.find(query, getData)
+        .sort({ createdAt: -1 })
+        .then((brandData) => {
+            return brandData
+        })
+        .catch((error) => {
+            console.log(error)
             return null
         })
 }
@@ -231,4 +258,5 @@ module.exports = {
     fetchBrandCount,
     fetchBrandDataCus,
     fetchBrandCountCus,
+    homePageBrand,
 }
